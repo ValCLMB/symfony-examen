@@ -106,4 +106,29 @@ class Character
 
         return $this;
     }
+
+    /**
+     * @param int $damage
+     *
+     * @return int
+     */
+    public function getHit(int $damage): int
+    {
+        $this->setHealthPoint($this->getHealthPoint() - $damage);
+
+        return $this->getHealthPoint();
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAlive(): bool
+    {
+        return $this->getHealthPoint() > 0;
+    }
+
+    public function hasGivenUp(): bool
+    {
+        return $this->getHealthPoint() <= 200;
+    }
 }

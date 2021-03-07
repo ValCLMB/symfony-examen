@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Gimli et Legolas s'entrainent à nouveau !
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h2>Entrainement du {{ 'now'|date('d/m/Y à H:i:s') }}</h2>
+        <p>
+            Le combat démarre !
+        </p>
+        <ol>
+            {% for run in runs %}
+                <li>
+                    <h3>Tour {{ round((loop.index / 2), 0, 'floor' ) }}</h3>
+                    {{ attacker }} attaque {{ defender }} !<br />
+                    {% if run.damage < 0 %}
+                        {{ run.attacker }} inflige {{ run.damages }} dégâts à {{ run.defender }} !
+                    {% endif %}
+                    {% else %}
+                        {{ run.attacker }} a raté son attaque !
+                    {% endif %}
+                    {% if run.attackerWins %}
+                        {{ run.attacker }} a gagné !
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ol>
+    </div>
+{% endblock %}
