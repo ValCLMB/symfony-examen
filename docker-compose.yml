@@ -1,0 +1,66 @@
+version: "3"
+
+services:
+    app:
+        image: drakona/php:7.4-symfony
+        depends_on:
+            - db
+        volumes:
+            - .:/srv
+        tty: true
+
+    nginx:
+        image: drakona/nginx:symfony
+        depends_on:
+            - app
+        volumes:
+            - .:/srv
+        ports:
+            - "8000:80"
+
+    assets:
+        image: drakona/node:14-alpine-auto
+        environment:
+            - NODE_ENV=development
+            - LOGGY_STACKS=1
+        volumes:
+            - .:/srv
+        ports:
+            - "8081:8080"
+
+    db:
+        image: mysql:5.7
+        command: --max-allowed-packet=6710886400 --default-authentication-plugin=mysql_native_password
+        environment:
+            MYSQL_ROOT_PASSWORD: pass
+            MYSQL_DATABASE: exam-symfony
+            MYSQL_USER: root
+            MYSQL_PASSWORD: pass
+        volumes:
+            - db-data:/var/lib/mysql
+        ports:
+            - 3306:3306
+
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin:latest
+        depends_on:
+            - db
+        links:
+            - db:db
+        ports:
+            - 8080:80
+        environment:
+            MYSQL_ROOT_PASSWORD: pass
+            MYSQL_USER: root
+            MYSQL_PASSWORD: pass
+
+    mailhog:
+        image: mailhog/mailhog
+        logging:
+            driver: 'none'
+        ports:
+            - '8025:8025'
+            - '1025:1025'
+
+volumes:
+    db-data: {}
