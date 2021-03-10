@@ -1,0 +1,42 @@
+{% extends 'default/layout.html.twig' %}
+
+{% block title %}
+	Layout
+{% endblock %}
+
+
+{% block header%}
+	<h1>{{ 'Un titre magnifique' | title }}</h1>
+
+{% endblock %}
+
+{% block content %}
+
+	<table>
+
+		<tr>
+			<td>id</td>
+			<td>email</td>
+			<td>sujet</td>
+			<td>message</td>
+			<td>crée à</td>
+
+		</tr>
+
+		{% for contact in contacts %}
+			<tr>
+				<td>{{ contact.id }}</td>
+				<td>{{ contact.email }}</td>
+				<td>{{ contact.subject }}</td>
+				<td>{{ contact.message }}</td>
+				<td>{{ contact.createdat|date('d/m/Y') }}</td>
+			</tr>
+
+
+		{% endfor %}
+
+
+	</table>
+
+
+{% endblock %}

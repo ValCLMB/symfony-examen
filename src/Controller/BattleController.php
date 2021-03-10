@@ -5,6 +5,8 @@ namespace App\Controller;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Entity\Character;
+use App\Services\ActionResolver;
 
 /**
  * @Route("battle")
@@ -51,14 +53,14 @@ class BattleController extends AbstractController
             $attacks[] = $this->runAttack($legolas, $gimli);
 
             if (!$gimli->hasGivenUp()) {
-                $attacks[] = $this->runattack($gimli, $legolas);
+                $attacks[] = $this->runAttack($gimli, $legolas);
             }
         }
 
         return $attacks;
     }
 
-    protected function runAttack(Character $attacker, Character $defender): array
+    protected function runAttack(Character $attacker, Character $defender, ActionResolver $actionResolver): array
     {
         $damage = $actionResolver->attack($attacker, $defender);
         if ($damage < 0) {
